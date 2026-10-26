@@ -1,6 +1,13 @@
-name: CI/CD
-on: [push]
+# CI for this copy of Express: the reusable pipeline runs the real Express test suite and lint, pinned to a commit.
+name: CI
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "43 2 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   pipeline:
-    uses: docaohieu2808/reusable-workflows/.github/workflows/auto-pipeline.yml@master
-    secrets: inherit
+    uses: docaohieu2808/reusable-workflows/.github/workflows/auto-pipeline.yml@8ba3a42948ae42fd413647765bdf124c82bb8479 # v2.0.0

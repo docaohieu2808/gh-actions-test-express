@@ -1,26 +1,27 @@
 # gh-actions-test-express
 
-**Tier:** GitHub Actions L1.5 — fixture dự án thật để stress-test reusable-workflows.
+[![CI](https://github.com/docaohieu2808/gh-actions-test-express/actions/workflows/ci.yml/badge.svg)](https://github.com/docaohieu2808/gh-actions-test-express/actions/workflows/ci.yml)
 
-**Vị trí trong learning path:**
+Level 1.5 of the GitHub Actions track: a copy of [expressjs/express](https://github.com/expressjs/express) (MIT,
+original copyright and history kept; Express's own readme is in [EXPRESS-README.md](EXPRESS-README.md)) used as a
+real-world project for [reusable-workflows](https://github.com/docaohieu2808/reusable-workflows).
+
+A toy project only proves the pipeline runs. Express proves it copes with a real one: hundreds of mocha tests, ESLint,
+and a large dependency tree. CI is one call to the reusable pipeline, pinned to its v2.0.0 commit:
+
+```yaml
+jobs:
+  pipeline:
+    uses: docaohieu2808/reusable-workflows/.github/workflows/auto-pipeline.yml@8ba3a42948ae42fd413647765bdf124c82bb8479 # v2.0.0
 ```
-test-gh-actions (L1) → gh-actions-test-express (L1.5) → reusable-workflows (L5-6)
-```
 
-## Mục đích
+The pipeline detects Node, installs from the committed `package-lock.json` (`npm ci`), runs `npm run lint` and
+`npm test`, and scans dependencies (Trivy) and the tree for secrets (gitleaks). It runs on every push, on pull
+requests and every Monday.
 
-Fork của [expressjs/express](https://github.com/expressjs/express) dùng làm CI fixture. Lý do dùng Express thay vì repo đồ chơi:
+The repository also keeps Express's own SHA-pinned CodeQL and OpenSSF Scorecard workflows, a useful comparison with
+how a mature project hardens its supply chain.
 
-- Test suite thật (~600 tests), lockfile thật → reusable-workflows phải handle real-world Node.js project
-- Thừa hưởng upstream workflows SHA-pinned (CodeQL, Scorecard) — minh hoạ best practice supply-chain so sánh với `@master` của reusable-workflows
+Track: `test-gh-actions` (L1) → `gh-actions-test-express` (L1.5) → `reusable-workflows` (L5–6).
 
-CI của repo này (`.github/workflows/ci.yml`) gọi thẳng reusable-workflows — tương tự test-gh-actions nhưng với project phức tạp hơn.
-
-## Lưu ý
-
-Đây là **fork để test pipeline**, không phải fork để contribute lại Express. Các workflows upstream (`codeql.yml`, `scorecard.yml`, `legacy.yml`) giữ nguyên để minh hoạ sự khác biệt giữa SHA-pinned actions (chuẩn tốt) và `@master` (learning trade-off).
-
-## Demo points (interview)
-
-- Dùng project thật có test suite đủ lớn để prove pipeline handle được production codebase
-- Upstream workflows SHA-pinned (`actions/checkout@v6.0.2 SHA`, `codeql-action@v4.32.4 SHA`) — đây là supply-chain security chuẩn, dùng để giải thích tại sao production nên pin còn `@master` chỉ OK cho learning
+Run locally: `npm ci && npm run lint && npm test`.
