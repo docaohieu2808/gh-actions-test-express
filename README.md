@@ -7,12 +7,12 @@ original copyright and history kept; Express's own readme is in [EXPRESS-README.
 real-world project for [reusable-workflows](https://github.com/docaohieu2808/reusable-workflows).
 
 A toy project only proves the pipeline runs. Express proves it copes with a real one: hundreds of mocha tests, ESLint,
-and a large dependency tree. CI is one call to the reusable pipeline, pinned to its v2.0.0 commit:
+and a large dependency tree. CI is one call to the reusable pipeline, pinned to its v2.0.1 commit:
 
 ```yaml
 jobs:
   pipeline:
-    uses: docaohieu2808/reusable-workflows/.github/workflows/auto-pipeline.yml@8ba3a42948ae42fd413647765bdf124c82bb8479 # v2.0.0
+    uses: docaohieu2808/reusable-workflows/.github/workflows/auto-pipeline.yml@879b76e3e519725f0bfaea657865182b72addf4f # v2.0.1
 ```
 
 The pipeline detects Node, installs from the committed `package-lock.json` (`npm ci`), runs `npm run lint` and
